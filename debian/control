@@ -1,0 +1,35 @@
+Source: wangle
+Priority: extra
+Maintainer: Patrik Modesto <patrik.modesto@firma.seznam.cz>
+Build-Depends:
+ cmake,
+ debhelper (>= 8),
+ google-mock (>= 1.8.0),
+ libboost-all-dev,
+ libboost-all-dev,
+ libdouble-conversion-dev,
+ libfolly-dev,
+ libgflags-dev,
+ libgoogle-glog-dev,
+ libgtest-dev (>= 1.8.0),
+ libssl-dev,
+ pkg-config
+Standards-Version: 3.9.4
+Section: libs
+Homepage: https://github.com/facebook/wangle
+Vcs-Git: https://github.com/facebook/wangle
+
+Package: libwangle-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}
+Description: Wangle: Facebook C++ networking library
+ C++ networking library
+ .
+ Wangle is a library that makes it easy to build protocols, application
+ clients, and application servers.
+ .
+ It's like Netty + Finagle smooshed together, but in C++
+ .
+ This package contains the development headers and static libraries needed for
+ writing C++ applications.
