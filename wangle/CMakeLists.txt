@@ -123,47 +123,17 @@ ENDIF(CMAKE_CROSSCOMPILING)
 if(BUILD_TESTS)
   enable_testing()
 
-  include(ExternalProject)
-
-# Download and install GoogleMock
-  ExternalProject_Add(
-      gtest
-      GIT_REPOSITORY https://github.com/google/googletest.git
-      GIT_TAG release-1.8.0
-      PREFIX gtest
-      # Disable install step
-      INSTALL_COMMAND ""
-      LOG_DOWNLOAD ON
-      LOG_UPDATE 1
-      LOG_CONFIGURE ON
-      LOG_BUILD ON
-      LOG_TEST 1
-      LOG_INSTALL 1
-  )
-
-  # Create a libgmock target to be used as a dependency by test programs
-  add_library(libgmock IMPORTED STATIC GLOBAL)
-  add_dependencies(libgmock gtest)
-  add_library(libgmock_main IMPORTED STATIC GLOBAL)
-  add_dependencies(libgmock_main gtest)
-
-  # Set gmock properties
-  ExternalProject_Get_Property(gtest source_dir binary_dir)
-  set_target_properties(libgmock PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
-  set_target_properties(libgmock_main PROPERTIES
-      "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock_main.a"
-      "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-  )
-
-  include_directories("${source_dir}/googlemock/include")
-  include_directories("${source_dir}/googletest/include")
+  include_directories(/usr/src/gtest)
+  include_directories(/usr/src/gmock)
+  add_library(libgtestmock STATIC
+      /usr/src/gmock/src/gmock.cc
+      /usr/src/gmock/src/gmock-all.cc
+      /usr/src/gtest/src/gtest-all.cc
+      /usr/src/gmock/src/gmock_main.cc)
 
   macro(add_gtest test_source test_name)
   add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} wangle libgmock libgmock_main)
+  target_link_libraries(${test_name} wangle libgtestmock)
   add_test(${test_name} bin/${test_name})
   endmacro(add_gtest)
 
